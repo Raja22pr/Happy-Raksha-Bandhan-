@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Raksha Bandhan!</title>
+    <style>
+        /* --- 1. General Setup & Fonts --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        :root {
+            --dark-bg: #10001f;
+            --violet: #2a0a4a;
+            --magenta: #ff00ff;
+            --cyan: #00ffff;
+            --gold: #ffd700;
+            --whatsapp-green: #25D366;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--dark-bg);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* --- 2. Landing Screen (Before Reveal) --- */
+        #landing-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite, zoomInOutText 8s ease-in-out infinite;
+            z-index: 100;
+            transition: opacity 1.5s ease-out;
+            opacity: 1;
+        }
+
+        #landing-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #landing-screen h1 {
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: 700;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        #reveal-button {
+            margin-top: 2rem;
+            padding: 1rem 2.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            background-color: transparent;
+            border: 3px solid #fff;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--cyan), 0 0 30px var(--cyan), inset 0 0 15px var(--cyan);
+            animation: neonGlow 1.5s infinite alternate;
+            transition: all 0.3s ease;
+        }
+
+        #reveal-button:hover {
+            box-shadow: 0 0 25px var(--magenta), 0 0 50px var(--magenta), inset 0 0 25px var(--magenta);
+            color: var(--magenta);
+            border-color: var(--magenta);
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes zoomInOutText {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes neonGlow {
+            from { text-shadow: 0 0 10px #fff, 0 0 20px var(--cyan); }
+            to { text-shadow: 0 0 20px #fff, 0 0 30px var(--cyan); }
+        }
+
+        /* --- 3. Main Celebration Page --- */
+        #celebration-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; /* Align content to the top */
+            padding-top: 2vh;
+            background: linear-gradient(135deg, var(--dark-bg), var(--violet));
+            z-index: 1;
+        }
+
+        .content-wrapper {
+            width: 95%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        /* --- 4. Celebration Effects (Canvas, Flowers, Balloons) --- */
+        #celebration-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .falling-object {
+            position: absolute;
+            top: -50px;
+            font-size: 2rem;
+            user-select: none;
+            pointer-events: none;
+            z-index: 5;
+            animation: fall 10s linear infinite, sway 3s ease-in-out infinite alternate;
+        }
+
+        .balloon {
+            position: absolute;
+            bottom: -150px;
+            width: 50px;
+            height: 65px;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: drift 15s linear infinite;
+            filter: drop-shadow(0 0 10px currentColor);
+            opacity: 0.7;
+            z-index: 4;
+        }
+        .balloon::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+        @keyframes sway {
+            from { transform: translateX(-20px); }
+            to { transform: translateX(20px); }
+        }
+        @keyframes drift {
+            to { transform: translateY(-110vh); }
+        }
+        
+
+        /* --- 5. Main Content Styling --- */
+        .title-container {
+            position: relative;
+            margin-bottom: 1vh;
+        }
+        .title-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120%;
+            height: 150%;
+            background: linear-gradient(45deg, var(--magenta), var(--cyan));
+            filter: blur(40px);
+            opacity: 0.7;
+            z-index: -1;
+            animation: glow-rotate 10s linear infinite;
+        }
+
+        #main-title {
+            font-size: clamp(2rem, 7vw, 3.5rem);
+            font-weight: 900;
+            letter-spacing: 2px;
+            animation: discoLights 4s linear infinite, blink-smooth 2s infinite;
+        }
+
+        @keyframes floatTitle {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            #main-title {
+                animation: discoLights 4s linear infinite, blink-smooth 2s infinite, floatTitle 3s ease-in-out infinite;
+            }
+        }
+        }
+
+        #rakhi-image {
+            width: 100%;
+            max-width: 250px;
+            height: auto;
+            border-radius: 20px;
+            animation: pulse 4s infinite, shadow-glow 6s infinite alternate;
+            z-index: 2;
+        }
+
+        .greeting-container {
+            position: relative;
+            background: rgba(0,0,0,0.3);
+            padding: 1rem;
+            border-radius: 15px;
+            margin-top: 2vh;
+        }
+        .greeting-container::before {
+             content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 105%;
+            height: 110%;
+            background: var(--gold);
+            filter: blur(30px);
+            opacity: 0.6;
+            z-index: -1;
+            border-radius: 15px;
+        }
+
+        #greeting-message {
+            font-size: clamp(1.1rem, 4vw, 1.5rem);
+            word-wrap: break-word;
+        }
+
+        #greeting-name {
+            font-weight: bold;
+            animation: colorChangeGlow 5s infinite, blink-smooth 2.5s infinite, zoom-gentle 6s infinite;
+        }
+
+        /* Custom Message RGB Bold Animation */
+        #custom-message {
+            font-weight: bold;
+            animation: rgbText 2s linear infinite;
+        }
+
+        @keyframes rgbText {
+            0% { color: #ff0000; }
+            33% { color: #00ff00; }
+            66% { color: #0000ff; }
+            100% { color: #ff0000; }
+        }
+        }
+
+        /* --- 6. Input & Buttons --- */
+        .input-group {
+            width: 100%;
+            margin-top: 2vh;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            background-color: rgba(0,0,0,0.5);
+            border: 2px solid var(--cyan);
+            border-radius: 10px;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            box-shadow: 0 0 15px var(--cyan);
+            border-color: var(--gold);
+        }
+
+        .button-group {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 2vh;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .gift-button {
+            display: inline-block;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(45deg, var(--magenta), #8a2be2);
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--magenta);
+            animation: bounce 2s infinite, pulse-glow 2s infinite;
+        }
+
+        #whatsapp-share {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+            background-color: var(--whatsapp-green);
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #whatsapp-share:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--whatsapp-green);
+        }
+
+        /* --- 7. Keyframe Animations --- */
+        @keyframes discoLights {
+            0% { color: var(--magenta); }
+            25% { color: var(--cyan); }
+            50% { color: var(--gold); }
+            75% { color: #39ff14; }
+            100% { color: var(--magenta); }
+        }
+
+        @keyframes blink-smooth {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @keyframes glow-rotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shadow-glow {
+            from { box-shadow: 0 5px 25px 5px var(--magenta); }
+            to { box-shadow: 0 5px 35px 10px var(--cyan); }
+        }
+
+        @keyframes colorChangeGlow {
+            0% { color: var(--cyan); text-shadow: 0 0 10px var(--cyan); }
+            50% { color: var(--gold); text-shadow: 0 0 10px var(--gold); }
+            100% { color: var(--cyan); text-shadow: 0 0 10px var(--cyan); }
+        }
+
+        @keyframes zoom-gentle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 15px var(--magenta); }
+            50% { box-shadow: 0 0 25px var(--magenta); }
+            100% { box-shadow: 0 0 15px var(--magenta); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Audio file for background music -->
+    <audio id="bg-music" loop src="rakhi.mp3"></audio>
+
+    <!-- 1. Initial Landing Screen -->
+    <div id="landing-screen">
+        <h1>Special Raksha Bandhan message waiting for you</h1>
+        <button id="reveal-button">Click to Reveal</button>
+    </div>
+
+    <!-- 2. Main Celebration Page -->
+    <div id="celebration-screen" style="display: none;">
+        <!-- Canvas for music-reactive effects -->
+        <canvas id="celebration-canvas"></canvas>
+        
+        <div class="content-wrapper">
+            <!-- Happy Raksha Bandhan Text -->
+            <div class="title-container">
+                <h1 id="main-title">Happy Raksha Bandhan</h1>
+            </div>
+
+            <!-- Rakhi GIF Image -->
+            <img id="rakhi-image" src="rakhi.gif" alt="Animated Rakhi">
+
+            <!-- Greeting Message -->
+            <div class="greeting-container">
+                <p id="greeting-message">
+                    <span id="greeting-name">Someone</span> ki taraf se: 
+                    <span id="custom-message">aapko Raksha Bandhan ki bahut bahut badhai</span>
+                </p>
+            </div>
+
+            <!-- Input Fields for Name and Message -->
+            <div class="input-group">
+                <input type="text" id="name-input" class="input-field" placeholder="Enter your name">
+                <textarea id="message-input" class="input-field" rows="2" placeholder="Type your message"></textarea>
+            </div>
+
+            <!-- Buttons: Gifts and WhatsApp Share -->
+            <div class="button-group">
+                <!-- 🔥🔥 PASTE YOUR AMAZON AFFILIATE LINK BELOW 🔥🔥 -->
+                <a href="YOUR_AFFILIATE_LINK" target="_blank" class="gift-button">🎁 Special Rakhi Gifts 🎁 👇</a>
+                
+                <a id="whatsapp-share" href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 448 512" fill="white"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zM223.9 439.6c-38.2 0-73.7-15.7-99.8-41.5l-7.1-4.2-74.5 19.6 19.9-72.6-4.5-7.4c-18.5-30.7-29.9-66.5-29.9-104.4 0-107.6 87.4-195 195-195 53 0 101.4 20.8 137.8 57.2 36.4 36.4 57.2 84.8 57.2 137.8-.1 107.6-87.5 195-195.1 195zM333.6 295.5c-5.7-2.8-33.7-16.6-39-18.6-5.3-2-9.1-3.2-13 3.2-3.8 6.3-14.7 18.6-18 22.5-3.3 3.8-6.7 4.3-12.4 1.5-5.7-2.8-24.1-8.9-45.8-28.2-17-15.1-28.5-33.8-31.8-39.6-3.3-5.8-.3-9.1 2.8-11.9 2.8-2.5 5.7-6.3 8.5-9.4 2.8-3.1 3.8-5.3 5.7-8.8 1.9-3.5.9-6.7-1.5-9.4-2.4-2.8-13-31.2-17.7-42.6-4.8-11.4-9.7-9.8-13.3-10-3.3-.2-7.1-.2-10.8-.2-3.7 0-9.7 1.5-14.7 7.4-5 5.8-19.1 18.6-19.1 45.4 0 26.8 19.4 52.6 22.1 56.4 2.7 3.8 38.5 58.7 94.1 82.8 13.6 5.8 25.6 9.3 34.4 11.9 14.6 4.2 27.9 3.6 38.4 2.2 11.9-1.6 33.7-13.8 38.4-27.1 4.7-13.3 4.7-24.6 3.3-27.1z"/></svg>
+                    <span>Share on WhatsApp</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Element References ---
+            const landingScreen = document.getElementById('landing-screen');
+            const revealButton = document.getElementById('reveal-button');
+            const celebrationScreen = document.getElementById('celebration-screen');
+            const bgMusic = document.getElementById('bg-music');
+            
+            const greetingNameElem = document.getElementById('greeting-name');
+            const customMessageElem = document.getElementById('custom-message');
+            const nameInput = document.getElementById('name-input');
+            const messageInput = document.getElementById('message-input');
+            const whatsappShareBtn = document.getElementById('whatsapp-share');
+
+            // --- Initial State from URL Parameters ---
+            const urlParams = new URLSearchParams(window.location.search);
+            const initialName = urlParams.get('name') || 'Someone';
+            const initialMsg = urlParams.get('msg') || 'aapko Raksha Bandhan ki bahut bahut badhai';
+
+            greetingNameElem.textContent = initialName;
+            customMessageElem.textContent = initialMsg;
+            nameInput.value = initialName;
+            messageInput.value = initialMsg;
+            
+            // --- Reveal Button Logic ---
+            revealButton.addEventListener('click', () => {
+                // Hide landing screen
+                landingScreen.classList.add('hidden');
+                
+                // Show celebration screen
+                celebrationScreen.style.display = 'flex';
+
+                // Play music
+                bgMusic.play().catch(e => console.error("Audio playback failed:", e));
+
+                // Start animations
+                startCelebrationEffects();
+            });
+
+            // --- Input Handling ---
+            function updateGreeting() {
+                greetingNameElem.textContent = nameInput.value || 'Someone';
+                customMessageElem.textContent = messageInput.value || '...';
+            }
+            nameInput.addEventListener('input', updateGreeting);
+            messageInput.addEventListener('input', updateGreeting);
+
+            // --- WhatsApp Share Logic ---
+            whatsappShareBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const name = encodeURIComponent(nameInput.value);
+                const msg = encodeURIComponent(messageInput.value);
+
+                // Construct page URL with parameters
+                const pageUrl = `${window.location.origin}${window.location.pathname}?name=${name}&msg=${msg}`;
+
+                // Construct WhatsApp message
+                const whatsappMsg = encodeURIComponent(`*${nameInput.value} ki taraf se ek special message:* \n\n_"${messageInput.value}"_\n\nApna message banane ke liye yahan click karein: \n${pageUrl}`);
+                
+                window.open(`https://api.whatsapp.com/send?text=${whatsappMsg}`, '_blank');
+            });
+            
+            // --- Celebration Effects ---
+            function startCelebrationEffects() {
+                // Falling Flowers/Emojis
+                const emojis = ['🌺', '💐', '🥀', '🌹', '🌸', '🌼', '🌻', '🌟', '🌈'];
+                setInterval(() => {
+                    createFallingObject(emojis[Math.floor(Math.random() * emojis.length)], 'flower');
+                }, 800); // Reduced density
+
+                // Glowing Balloons
+                setInterval(() => {
+                    createFallingObject('🎈', 'balloon');
+                }, 3000);
+
+                // Music-Reactive Confetti
+                setupMusicReactiveCanvas();
+            }
+
+            function createFallingObject(content, type) {
+                const object = document.createElement('div');
+                object.innerHTML = content;
+                object.style.left = `${Math.random() * 100}vw`;
+
+                if (type === 'balloon') {
+                    const size = Math.random() * 40 + 30; // 30px to 70px
+                    const color = `hsl(${Math.random() * 360}, 100%, 70%)`;
+                    object.className = 'balloon';
+                    object.style.width = `${size}px`;
+                    object.style.height = `${size * 1.3}px`;
+                    object.style.color = color;
+                    object.style.backgroundColor = color;
+                    object.style.animationDuration = `${Math.random() * 10 + 10}s`;
+                } else {
+                    object.className = 'falling-object';
+                    object.style.animationDuration = `${Math.random() * 5 + 7}s`;
+                    object.style.fontSize = `${Math.random() * 1.5 + 1}rem`;
+                }
+
+                celebrationScreen.appendChild(object);
+
+                setTimeout(() => {
+                    object.remove();
+                }, 15000);
+            }
+
+            // --- Music Reactive Canvas Setup ---
+            function setupMusicReactiveCanvas() {
+                const canvas = document.getElementById('celebration-canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+
+                let audioContext, analyser, source, bufferLength, dataArray;
+                let particles = [];
+                
+                try {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    analyser = audioContext.createAnalyser();
+                    source = audioContext.createMediaElementSource(bgMusic);
+                    
+                    source.connect(analyser);
+                    analyser.connect(audioContext.destination);
+
+                    analyser.fftSize = 256;
+                    bufferLength = analyser.frequencyBinCount;
+                    dataArray = new Uint8Array(bufferLength);
+                } catch(e) {
+                    console.error("Web Audio API not supported or failed to initialize.", e);
+                    return; // Don't run animation if API fails
+                }
+
+                function createParticle(x, y, intensity) {
+                    const size = Math.random() * 2 + intensity * 0.05;
+                    const color = `hsl(${Math.random() * 360}, 100%, 75%)`;
+                    const speedX = (Math.random() - 0.5) * 4;
+                    const speedY = (Math.random() - 0.5) * 4 - 2; // Move upwards initially
+                    particles.push({ x, y, size, color, speedX, speedY, life: 1 });
+                }
+
+                function animateParticles() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    analyser.getByteFrequencyData(dataArray);
+
+                    let bassIntensity = 0;
+                    for (let i = 0; i < bufferLength / 4; i++) { // Analyze bass frequencies
+                        bassIntensity += dataArray[i];
+                    }
+                    bassIntensity /= (bufferLength / 4);
+
+                    if (bassIntensity > 100) { // Threshold for beat detection
+                        const burstAmount = Math.floor((bassIntensity - 100) / 20);
+                        for (let i = 0; i < burstAmount; i++) {
+                            const x = Math.random() * canvas.width;
+                            const y = Math.random() * canvas.height * 0.7 + canvas.height * 0.3;
+                            createParticle(x, y, bassIntensity);
+                        }
+                    }
+
+                    particles.forEach((p, index) => {
+                        p.x += p.speedX;
+                        p.y += p.speedY;
+                        p.life -= 0.015;
+                        p.speedY += 0.05; // Gravity
+
+                        if (p.life <= 0) {
+                            particles.splice(index, 1);
+                        } else {
+                            ctx.beginPath();
+                            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                            ctx.fillStyle = p.color;
+                            ctx.globalAlpha = p.life;
+                            ctx.fill();
+                            ctx.globalAlpha = 1.0;
+                        }
+                    });
+
+                    requestAnimationFrame(animateParticles);
+                }
+
+                bgMusic.onplay = () => {
+                   if (audioContext.state === 'suspended') {
+                       audioContext.resume();
+                   }
+                   animateParticles();
+                };
+            }
+             window.addEventListener('resize', () => {
+                const canvas = document.getElementById('celebration-canvas');
+                if(canvas){
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
